@@ -144,7 +144,7 @@ public class _SVD_AVRG_GBE {
 		} else {																// Film is worse than others in average
 			gbePrediction = allFilmsAverageRating - Math.abs(filmDifference);
 		}
-		if (userDifference<0){ 													// User usually rates less average rating
+		if (userDifference<0){ 													// User usually rates less than average rating
 			gbePrediction = gbePrediction - userDifference;
 		} else {																// User usually rates more than average rating
 			gbePrediction = gbePrediction + userDifference;
