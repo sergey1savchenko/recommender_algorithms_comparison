@@ -14,7 +14,7 @@ import utils.*;
 
 public class weighedSVD {
 
-	static int e = 10000; 														// number of experiments
+	static int e = 1000; 														// number of experiments
 
 	static Matrix userItem, Uz, Vz;
 	static HashMap<Integer, TreeSet<Integer>> fu;								// films and their users

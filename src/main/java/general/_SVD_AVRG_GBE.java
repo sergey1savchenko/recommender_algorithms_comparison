@@ -15,7 +15,7 @@ public class _SVD_AVRG_GBE {
 
 	static int e = 1000; 														// number of experiments
 
-	static Matrix userItem, UzSz, Vz;
+	static Matrix userItem, UzSz, SzVz;
 	static HashMap<Integer, TreeSet<Integer>> fu;								// films and their users
 	static HashMap<Integer, TreeSet<Integer>> uf;								// users and their films
 	static HashMap<Integer, Double> fr;											// films average ratings
@@ -34,7 +34,7 @@ public class _SVD_AVRG_GBE {
 
 		userItem = ObjectsReader.get("userItem");
 		UzSz = ObjectsReader.get("UzSz");
-		Vz = ObjectsReader.get("Vtz").transpose();
+		SzVz = (ObjectsReader.get("Sz").times(ObjectsReader.get("Vtz"))).transpose();
 
 		fu = FilmsUsers.getFilmsUsers();
 		uf = UsersFilms.getUsersFilms();
@@ -111,7 +111,7 @@ public class _SVD_AVRG_GBE {
 
 	private static double SVDbyItemSimilarity(int user, int film) throws IOException{
 		int [] films = UsersFilms.getFilmsByUser(uf, user, film);
-		int closestFilmId = Tools.getClosest(Vz, films, film);
+		int closestFilmId = Tools.getClosest(SzVz, films, film);
 		if (closestFilmId!=(-1)){
 			double predictionByItem = userItem.get(user, closestFilmId);
 			//System.out.println("SVD prediction by Item-based similarity: "+predictionByItem);
