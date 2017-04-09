@@ -20,7 +20,7 @@ import utils.Constants;
 public class RecommenderSystemUserBased {
 
 	static int e = 5000; 														// number of experiments
-	private static double threshold = 0.1;
+	private static double threshold = 0.3;
 
 	public static void main(String[] args){
 		
@@ -42,15 +42,9 @@ public class RecommenderSystemUserBased {
 		}
 		UserNeighborhood neighborhood = new ThresholdUserNeighborhood(threshold, similarity, model);
 		GenericUserBasedRecommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);
-		/*//													userId numberOfItemsToRecommend
-		List<RecommendedItem> recommendations = recommender.recommend(1, 1);
-		for (RecommendedItem recommendation : recommendations) {
-			System.out.println(recommendation);					// RecommendedItem[item:227, value:5.0]
-		}
-		 */
 
 		int user, film;
-		Double real, prediction, error, errorSum = new Double(0), RMSE;
+		Double real, prediction, error, errorSum = 0.0, RMSE;
 
 		double[][] toProcess = null;
 		try {

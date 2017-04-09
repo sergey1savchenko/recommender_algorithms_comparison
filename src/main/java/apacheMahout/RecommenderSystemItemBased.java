@@ -40,22 +40,9 @@ public class RecommenderSystemItemBased {
 		
 
 		GenericItemBasedRecommender recommender = new GenericItemBasedRecommender(model, similarity);
-
-		/*
-		long itemId;
-		List<RecommendedItem> recommendations;
-		for (LongPrimitiveIterator items = model.getItemIDs(); items.hasNext();) {
-			itemId = items.nextLong();
-																// howMany
-			recommendations = recommender.mostSimilarItems(itemId, 1);
-			for (RecommendedItem recommendation : recommendations){
-				System.out.println("item: "+itemId+" closeItem: "+recommendation.getItemID()+" similarityLevel: "+recommendation.getValue());
-			}
-		}
-		 */
 		
 		int user, film;
-		Double real, prediction, error, errorSum = new Double(0), RMSE;
+		Double real, prediction, error, errorSum = 0.0, RMSE;
 
 		double[][] toProcess = null;
 		try {

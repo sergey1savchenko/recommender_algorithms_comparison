@@ -13,7 +13,7 @@ import utils.Tools;
 
 public class _SVD_AVRG_GBE {
 
-	static int e = 1000; 														// number of experiments
+	static int e = 10000; 														// number of experiments
 
 	static Matrix userItem, UzSz, SzVz;
 	static HashMap<Integer, TreeSet<Integer>> fu;								// films and their users
