@@ -1,5 +1,6 @@
 package utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -25,7 +26,7 @@ public class Tools {
 	public static double getWeighedSVDbyUser(Matrix userItem, Matrix Uz, int[] users, int user, int film) {
 		if (users.length>0){
 
-			HashMap<Integer, Double> distances = getDistances(Uz, users, user);
+			HashMap<Integer, Double> distances = getDistancesForWighedSVD(Uz, users, user);
 			Entry<Integer, Double> max = null;
 			for (Entry<Integer, Double> entry : distances.entrySet()) {
 				if (max == null || max.getValue() < entry.getValue()) {
@@ -49,7 +50,7 @@ public class Tools {
 	public static double getWeighedSVDbyItem(Matrix userItem, Matrix Vz, int[] films, int film, int user) {
 		if (films.length>0){
 
-			HashMap<Integer, Double> distances = getDistances(Vz, films, film);
+			HashMap<Integer, Double> distances = getDistancesForWighedSVD(Vz, films, film);
 			Entry<Integer, Double> max = null;
 			for (Entry<Integer, Double> entry : distances.entrySet()) {
 				if (max == null || max.getValue() < entry.getValue()) {
@@ -77,21 +78,59 @@ public class Tools {
 
 		for (int i = 0; i<items.length; i++){
 			dist = getEuclideanDistance(  x.getArray()[items[i]]  ,  x.getArray()[toCompareWithId])   ;
-			//dist = cosineSimilarity(  x.getArray()[items[i]]  ,  x.getArray()[toCompareWithId])   ;
 			distances.put(items[i], dist);
 		}
 		return distances;
 	}
+	
+	public static HashMap<Integer, Double> getDistancesForWighedSVD(Matrix x, int [] items, int toCompareWithId){
+		HashMap<Integer, Double> distances = new HashMap<Integer, Double>();
+		double dist;
 
+		for (int i = 0; i<items.length; i++){
+			dist = getEuclideanDistanceByAllCoordinates(  x.getArray()[items[i]]  ,  x.getArray()[toCompareWithId])   ;
+			distances.put(items[i], dist);
+		}
+		return distances;
+	}
+	
+	// considering only films watched by both users
 	public static double getEuclideanDistance(double[] a, double[] b) {
+		ArrayList<Integer> films = new ArrayList<Integer>();
+		for(int k=0; k< a.length; k++){
+			if(a[k]>0.0 && b[k]>0.0){
+				films.add(k);
+				//System.out.println("yes");
+			}else{
+				//System.out.println("no");
+			}
+		}
+		double[] c = new double[films.size()];
+		double[] d = new double[films.size()];
+		int counter = 0;
+		for(Integer id : films){
+			c[counter] = a[id];
+			d[counter] = b[id];
+			counter++;
+		}
+		
 		double x=0, s;
-
-		for(int i=0; i<a.length; x+=s*s){
-			s = a[i] - b[i++];
+		for(int i=0; i<c.length; x+=s*s){
+			s = c[i] - d[i++];
 		}
 		return Math.sqrt(x);
 	}
-
+	
+	// considering all coordinates
+	public static double getEuclideanDistanceByAllCoordinates(double[] c, double[] d) {
+		double x=0, s;
+		for(int i=0; i<c.length; x+=s*s){
+			s = c[i] - d[i++];
+		}
+		return Math.sqrt(x);
+	}
+	
+	/*
 	public static double cosineSimilarity(double[] vectorA, double[] vectorB) {
 		double dotProduct = 0.0;
 		double normA = 0.0;
@@ -103,7 +142,8 @@ public class Tools {
 		}   
 		return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
 	}
-
+	*/
+	
 	public static HashMap<Integer, Double> filmsAverageRatings(Matrix userItem){
 		HashMap<Integer, Double> filmsAverageRatings = new HashMap<Integer, Double>();
 		double temp=0.0;
